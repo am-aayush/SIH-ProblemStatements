@@ -34,8 +34,9 @@ app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/custom-problems', customProblemRoutes);
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/sih2025';
 
+console.log('Connecting to MongoDB database...');
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
