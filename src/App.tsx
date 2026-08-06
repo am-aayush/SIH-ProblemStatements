@@ -1027,7 +1027,7 @@ function Sidebar({ page, onNavigate, collapsed, bookmarks, compareIds }: {
   bookmarks: Set<number>; compareIds: Set<number>;
 }) {
   return (
-    <aside className={`flex flex-col bg-[var(--card)] border-r border-[var(--border)] transition-all duration-300
+    <aside className={`flex flex-col bg-(--card) border-r border-(--border) transition-all duration-300
       ${collapsed ? "w-14" : "w-60"} flex-shrink-0 h-full`}>
       <div className={`flex items-center gap-3 px-4 py-5 border-b border-[var(--border)] ${collapsed ? "justify-center" : ""}`}>
         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center flex-shrink-0">
@@ -1181,6 +1181,11 @@ export default function App() {
           )}
           {page === "settings" && <SettingsPage dark={dark} setDark={setDark} />}
         </main>
+
+        <footer className="bg-[var(--card)] border-t border-[var(--border)] px-4 py-3 text-xs text-[var(--muted-foreground)] text-center">
+          Made With ❤️ By Aayush
+        </footer>
+
       </div>
 
       <DetailDrawer problem={selectedProblem} onClose={() => setSelectedProblem(null)}
