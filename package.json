@@ -10,10 +10,17 @@
     "format": "oxfmt"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.7.1",
+    "axios": "^1.19.0",
+    "date-fns": "^4.4.0",
     "lucide-react": "^1.28.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^3.10.1"
+    "react-hook-form": "^7.84.0",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.18.2",
+    "recharts": "^3.10.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
