@@ -186,4 +186,82 @@ router.post('/logout', async (req, res) => {
   }
 });
 
+// Update Password
+router.put('/update-password', authMiddleware, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Incorrect old password' });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Generate Backup Code (Leader Only)
+router.post('/generate-backup-code', authMiddleware, async (req, res) => {
+  try {
+    const { targetUserId } = req.body;
+    
+    // Check if requester is leader of the same team
+    const team = await Team.findById(req.user.teamId);
+    if (!team) return res.status(404).json({ message: 'Team not found' });
+    if (team.leader.toString() !== req.user.userId.toString()) {
+      return res.status(403).json({ message: 'Only leaders can generate backup codes' });
+    }
+
+    const targetUser = await User.findById(targetUserId);
+    if (!targetUser || targetUser.teamId.toString() !== req.user.teamId.toString()) {
+      return res.status(404).json({ message: 'Target user not found in your team' });
+    }
+
+    const backupCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const hashedCode = await bcrypt.hash(backupCode, 10);
+    
+    targetUser.backupCode = hashedCode;
+    targetUser.backupCodeExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    await targetUser.save();
+
+    res.json({ backupCode, message: 'Backup code generated successfully. Share this with the user securely. It will expire in 24 hours.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset Password via Backup Code
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, backupCode, newPassword } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (!user.backupCode || !user.backupCodeExpires || user.backupCodeExpires < new Date()) {
+      return res.status(400).json({ message: 'Invalid or expired backup code' });
+    }
+
+    const isMatch = await bcrypt.compare(backupCode, user.backupCode);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid backup code' });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.backupCode = null;
+    user.backupCodeExpires = null;
+    await user.save();
+
+    res.json({ message: 'Password reset successfully. You can now login.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router;

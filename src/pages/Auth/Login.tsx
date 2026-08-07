@@ -66,7 +66,14 @@ export default function Login() {
               <input {...register('password')} type="password" placeholder="••••••••"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--muted)] text-[var(--foreground)] text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 transition-all" />
             </div>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            <div className="flex justify-between items-center mt-1">
+              {errors.password ? (
+                <p className="text-red-500 text-xs">{errors.password.message}</p>
+              ) : (
+                <span />
+              )}
+              <Link to="/reset-password" className="text-xs text-[var(--primary)] hover:underline font-medium">Forgot Password?</Link>
+            </div>
           </div>
 
           <button type="submit" disabled={loading}

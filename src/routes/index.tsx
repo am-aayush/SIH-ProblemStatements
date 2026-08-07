@@ -19,6 +19,7 @@ const Login = lazy(() => import('../pages/Auth/Login'));
 const LeaderSignup = lazy(() => import('../pages/Auth/LeaderSignup'));
 const JoinTeam = lazy(() => import('../pages/Auth/JoinTeam'));
 const JoinExistingTeam = lazy(() => import('../pages/Auth/JoinExistingTeam'));
+const ResetPassword = lazy(() => import('../pages/Auth/ResetPassword'));
 const TeamManagement = lazy(() => import('../pages/Team/TeamManagement'));
 const SkillMatrix = lazy(() => import('../pages/Team/SkillMatrix'));
 const TeamProgress = lazy(() => import('../pages/Team/TeamProgress'));
@@ -33,6 +34,8 @@ const SubmissionTrackerPage = lazy(() => import('../pages/Project/SubmissionTrac
 const FilesPage = lazy(() => import('../pages/Project/FilesPage'));
 const MeetingDetails = lazy(() => import('../pages/Project/MeetingDetails'));
 const CustomProblemsPage = lazy(() => import('../pages/Project/CustomProblemsPage'));
+const IdeasPage = lazy(() => import('../pages/Project/IdeasPage'));
+const MemberProfile = lazy(() => import('../pages/Team/MemberProfile'));
 
 export function AppRoutes() {
   return (
@@ -50,6 +53,7 @@ export function AppRoutes() {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/team" element={<TeamManagement />} />
+          <Route path="/team/member/:id" element={<MemberProfile />} />
           <Route path="/skill-matrix" element={<SkillMatrix />} />
           <Route path="/progress" element={<TeamProgress />} />
           <Route path="/profile" element={<Profile />} />
@@ -62,12 +66,14 @@ export function AppRoutes() {
           <Route path="/project/files" element={<FilesPage />} />
           <Route path="/custom-problems" element={<CustomProblemsPage />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/ideas" element={<IdeasPage />} />
         </Route>
       </Route>
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<LeaderSignup />} />
         <Route path="/join" element={<JoinTeam />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
