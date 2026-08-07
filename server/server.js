@@ -33,6 +33,14 @@ app.use('/api/resources', require('./routes/resources'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/custom-problems', customProblemRoutes);
 
+// Serve frontend static files in production
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Catch-all route to serve index.html for SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/sih2025';
 

@@ -78,6 +78,41 @@ router.post('/join-team', async (req, res) => {
   }
 });
 
+// Join Existing Team (For users already authenticated but without a team)
+router.post('/join-existing', authMiddleware, async (req, res) => {
+  try {
+    const { inviteCode } = req.body;
+
+    const invitation = await Invitation.findOne({ inviteCode, used: false, expiresAt: { $gt: new Date() } });
+    if (!invitation) return res.status(400).json({ message: 'Invalid or expired invite code' });
+
+    const team = await Team.findById(invitation.teamId);
+    if (!team) return res.status(400).json({ message: 'Team not found' });
+    
+    // Check if team is full by querying Users
+    const memberCount = await User.countDocuments({ teamId: team._id });
+    if (memberCount >= 6) return res.status(400).json({ message: 'Team is already full (max 6 members)' });
+
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.teamId = team._id;
+    await user.save();
+
+    invitation.used = true;
+    await invitation.save();
+
+    const token = jwt.sign({ userId: user._id, role: user.role, teamId: team._id }, JWT_SECRET, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ userId: user._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    await new RefreshToken({ token: refreshToken, userId: user._id }).save();
+    
+    res.status(200).json({ token, refreshToken, user: { _id: user._id, fullName: user.fullName, email: user.email, role: user.role, teamId: team._id } });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Login
 router.post('/login', async (req, res) => {
   try {

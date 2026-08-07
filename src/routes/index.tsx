@@ -18,6 +18,7 @@ const SettingsPage = lazy(() => import('../pages/Settings/SettingsPage'));
 const Login = lazy(() => import('../pages/Auth/Login'));
 const LeaderSignup = lazy(() => import('../pages/Auth/LeaderSignup'));
 const JoinTeam = lazy(() => import('../pages/Auth/JoinTeam'));
+const JoinExistingTeam = lazy(() => import('../pages/Auth/JoinExistingTeam'));
 const TeamManagement = lazy(() => import('../pages/Team/TeamManagement'));
 const SkillMatrix = lazy(() => import('../pages/Team/SkillMatrix'));
 const TeamProgress = lazy(() => import('../pages/Team/TeamProgress'));
@@ -37,6 +38,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
+        <Route path="/join-existing" element={<JoinExistingTeam />} />
         <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/problems" element={<ProblemsPage />} />

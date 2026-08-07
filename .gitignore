@@ -12,3 +12,4 @@ logs/
 .claude-replay.*
 .tmp-*
 temp.txt
+debug.txt
