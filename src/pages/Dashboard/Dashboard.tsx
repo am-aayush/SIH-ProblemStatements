@@ -49,7 +49,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-br from-[var(--primary)] to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg">
+      <div className="bg-linear-to-br from-(--primary) to-purple-600 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
           <div className="w-24 h-24 rounded-full border-4 border-white/20 overflow-hidden shrink-0 bg-white/10 flex items-center justify-center shadow-inner">
@@ -80,16 +80,16 @@ export default function Dashboard() {
       <div>
         <h2 className="text-lg font-bold text-[var(--foreground)] mb-4">Overview</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <div className="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow">
+          <Link to="/team" className="block bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md hover:border-[var(--primary)] transition-all">
             <Users className="text-blue-500 mb-3" size={24} />
             <p className="text-2xl font-bold text-[var(--foreground)]">{memberCount}</p>
             <p className="text-xs text-[var(--muted-foreground)] font-medium uppercase tracking-wider mt-1">Members</p>
-          </div>
-          <div className="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow">
+          </Link>
+          <Link to="/ideas" className="block bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md hover:border-[var(--primary)] transition-all">
             <Lightbulb className="text-yellow-500 mb-3" size={24} />
             <p className="text-2xl font-bold text-[var(--foreground)]">{analytics.ideas}</p>
             <p className="text-xs text-[var(--muted-foreground)] font-medium uppercase tracking-wider mt-1">Ideas</p>
-          </div>
+          </Link>
           <div className="bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow">
             <ListTodo className="text-indigo-500 mb-3" size={24} />
             <p className="text-2xl font-bold text-[var(--foreground)]">{totalTasks}</p>

@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
     default: 'Member' 
   },
   teamId: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+  backupCode: { type: String, default: null },
+  backupCodeExpires: { type: Date, default: null },
   
   // Profile Fields
   profile: {
