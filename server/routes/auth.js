@@ -35,7 +35,10 @@ router.post('/register-leader', async (req, res) => {
     const refreshToken = jwt.sign({ userId: leader._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
     await new RefreshToken({ token: refreshToken, userId: leader._id }).save();
     
-    res.status(201).json({ token, refreshToken, user: { _id: leader._id, fullName, email, role: leader.role, teamId: team._id } });
+    const userResponse = leader.toObject();
+    delete userResponse.password;
+    
+    res.status(201).json({ token, refreshToken, user: userResponse });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -71,7 +74,10 @@ router.post('/join-team', async (req, res) => {
     const refreshToken = jwt.sign({ userId: member._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
     await new RefreshToken({ token: refreshToken, userId: member._id }).save();
     
-    res.status(201).json({ token, refreshToken, user: { _id: member._id, fullName, email, role: member.role, teamId: team._id } });
+    const userResponse = member.toObject();
+    delete userResponse.password;
+    
+    res.status(201).json({ token, refreshToken, user: userResponse });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -106,7 +112,10 @@ router.post('/join-existing', authMiddleware, async (req, res) => {
     const refreshToken = jwt.sign({ userId: user._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
     await new RefreshToken({ token: refreshToken, userId: user._id }).save();
     
-    res.status(200).json({ token, refreshToken, user: { _id: user._id, fullName: user.fullName, email: user.email, role: user.role, teamId: team._id } });
+    const userResponse = user.toObject();
+    delete userResponse.password;
+    
+    res.status(200).json({ token, refreshToken, user: userResponse });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
@@ -128,7 +137,10 @@ router.post('/login', async (req, res) => {
     const refreshToken = jwt.sign({ userId: user._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
     await new RefreshToken({ token: refreshToken, userId: user._id }).save();
     
-    res.json({ token, refreshToken, user: { _id: user._id, fullName: user.fullName, email: user.email, role: user.role, teamId: user.teamId } });
+    const userResponse = user.toObject();
+    delete userResponse.password;
+    
+    res.json({ token, refreshToken, user: userResponse });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

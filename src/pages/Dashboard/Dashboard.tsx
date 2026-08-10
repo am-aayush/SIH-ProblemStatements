@@ -78,9 +78,9 @@ export default function Dashboard() {
 
       {/* Quick Statistics (Placeholders) */}
       <div>
-        <h2 className="text-lg font-bold text-[var(--foreground)] mb-4">Overview</h2>
+        <h2 className="text-lg font-bold text-(--foreground) mb-4">Overview</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <Link to="/team" className="block bg-[var(--card)] p-5 rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md hover:border-[var(--primary)] transition-all">
+          <Link to="/team" className="block bg-(--card) p-5 rounded-2xl border border-(--border) shadow-sm hover:shadow-md hover:border-[var(--primary)] transition-all">
             <Users className="text-blue-500 mb-3" size={24} />
             <p className="text-2xl font-bold text-[var(--foreground)]">{memberCount}</p>
             <p className="text-xs text-[var(--muted-foreground)] font-medium uppercase tracking-wider mt-1">Members</p>

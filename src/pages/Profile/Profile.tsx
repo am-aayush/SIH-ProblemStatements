@@ -81,7 +81,11 @@ export default function Profile() {
 
       const res = await api.put(`/users/${user._id}/profile`, payload);
       // Update local storage context
-      login(localStorage.getItem('token') || '', res.data);
+      login(
+        localStorage.getItem('token') || '',
+        localStorage.getItem('refreshToken') || '',
+        res.data
+      );
       toast.success('Profile updated successfully');
       setIsEditing(false);
     } catch (error) {
