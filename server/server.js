@@ -19,6 +19,8 @@ const notificationRoutes = require('./routes/notifications');
 const meetingRoutes = require('./routes/meetings');
 const submissionRoutes = require('./routes/submissions');
 const customProblemRoutes = require('./routes/customProblems');
+const masterAuthRoutes = require('./routes/masterAuth');
+const masterAnalyticsRoutes = require('./routes/masterAnalytics');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/teams', teamRoutes);
@@ -32,6 +34,10 @@ app.use('/api/submissions', submissionRoutes);
 app.use('/api/resources', require('./routes/resources'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/custom-problems', customProblemRoutes);
+
+// Master Admin Routes
+app.use('/api/master/auth', masterAuthRoutes);
+app.use('/api/master/analytics', masterAnalyticsRoutes);
 
 // Serve frontend static files in production
 app.use(express.static(path.join(__dirname, '../dist')));

@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
 import { ProtectedRoute } from './ProtectedRoute';
@@ -37,45 +37,62 @@ const CustomProblemsPage = lazy(() => import('../pages/Project/CustomProblemsPag
 const IdeasPage = lazy(() => import('../pages/Project/IdeasPage'));
 const MemberProfile = lazy(() => import('../pages/Team/MemberProfile'));
 
+// Master Admin Pages
+const MasterLogin = lazy(() => import('../pages/Master/MasterLogin'));
+const MasterDashboard = lazy(() => import('../pages/Master/MasterDashboard'));
+const MasterTeams = lazy(() => import('../pages/Master/MasterTeams'));
+const MasterTeamDetails = lazy(() => import('../pages/Master/MasterTeamDetails'));
+const MasterRoute = lazy(() => import('./MasterRoute'));
+
 export function AppRoutes() {
   return (
-    <Routes>
-      <Route element={<ProtectedRoute />}>
-        <Route path="/join-existing" element={<JoinExistingTeam />} />
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/problems" element={<ProblemsPage />} />
-          <Route path="/problems/:id" element={<ProblemDetails />} />
-          <Route path="/organizations" element={<OrgsPage />} />
-          <Route path="/themes" element={<ThemesPage />} />
-          <Route path="/departments" element={<DepsPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/team" element={<TeamManagement />} />
-          <Route path="/team/member/:id" element={<MemberProfile />} />
-          <Route path="/skill-matrix" element={<SkillMatrix />} />
-          <Route path="/progress" element={<TeamProgress />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/standup" element={<StandupPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/meetings" element={<MeetingsPage />} />
-          <Route path="/project/meetings/:id" element={<MeetingDetails />} />
-          <Route path="/project/submission-tracker" element={<SubmissionTrackerPage />} />
-          <Route path="/project/files" element={<FilesPage />} />
-          <Route path="/custom-problems" element={<CustomProblemsPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/ideas" element={<IdeasPage />} />
+    <Suspense fallback={null}>
+      <Routes>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/join-existing" element={<JoinExistingTeam />} />
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/problems" element={<ProblemsPage />} />
+            <Route path="/problems/:id" element={<ProblemDetails />} />
+            <Route path="/organizations" element={<OrgsPage />} />
+            <Route path="/themes" element={<ThemesPage />} />
+            <Route path="/departments" element={<DepsPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/compare" element={<ComparePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/team" element={<TeamManagement />} />
+            <Route path="/team/member/:id" element={<MemberProfile />} />
+            <Route path="/skill-matrix" element={<SkillMatrix />} />
+            <Route path="/progress" element={<TeamProgress />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/standup" element={<StandupPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/meetings" element={<MeetingsPage />} />
+            <Route path="/project/meetings/:id" element={<MeetingDetails />} />
+            <Route path="/project/submission-tracker" element={<SubmissionTrackerPage />} />
+            <Route path="/project/files" element={<FilesPage />} />
+            <Route path="/custom-problems" element={<CustomProblemsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/ideas" element={<IdeasPage />} />
+          </Route>
         </Route>
-      </Route>
-      <Route element={<PublicRoute />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<LeaderSignup />} />
-        <Route path="/join" element={<JoinTeam />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-      </Route>
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<LeaderSignup />} />
+          <Route path="/join" element={<JoinTeam />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+        {/* Master Admin Routes */}
+        <Route path="/master" element={<MasterLogin />} />
+        <Route element={<MasterRoute />}>
+          <Route path="/master/dashboard" element={<MasterDashboard />} />
+          <Route path="/master/teams" element={<MasterTeams />} />
+          <Route path="/master/teams/:id" element={<MasterTeamDetails />} />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
