@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite ",
-    "build": "vite build",
+    "dev": "vite",
+    "build": "vite build && cd server && npm install",
     "preview": "vite preview",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "start": "node server/server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",

@@ -20,6 +20,7 @@ export default function ProblemsPage() {
   const initialOrg = location.state?.org as string | undefined;
 
   const [view, setView] = useState<ViewMode>("grid");
+  const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [sortKey, setSortKey] = useState<SortKey>("id");
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
@@ -41,6 +42,9 @@ export default function ProblemsPage() {
 
   const filtered = useMemo(() => {
     let res = problems.filter(p => {
+      const yearMatches = (p.year || 2025) === selectedYear;
+      if (!yearMatches) return false;
+
       const q = search.toLowerCase();
       const matchSearch = !q || [p.title, p.description, p.organization, p.department, p.theme, p.category, String(p.id)]
         .some(v => v.toLowerCase().includes(q));
@@ -72,11 +76,11 @@ export default function ProblemsPage() {
       return sortAsc ? cmp : -cmp;
     });
     return res;
-  }, [search, filters, sortKey, sortAsc]);
+  }, [search, filters, sortKey, sortAsc, selectedYear]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paged = filtered.slice((page - 1) * perPage, page * perPage);
-  useEffect(() => setPage(1), [search, filters, view, sortKey, sortAsc]);
+  useEffect(() => setPage(1), [search, filters, view, sortKey, sortAsc, selectedYear]);
 
   const sort = (key: SortKey) => { if (sortKey === key) setSortAsc(a => !a); else { setSortKey(key); setSortAsc(true); } };
 
@@ -93,6 +97,20 @@ export default function ProblemsPage() {
       <div className="flex-1 min-w-0">
         {/* Controls */}
         <div className="flex items-center gap-3 mb-5 flex-wrap">
+          <div className="flex bg-[var(--muted)] rounded-lg p-1 mr-2">
+            <button 
+              onClick={() => setSelectedYear(2025)}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${selectedYear === 2025 ? "bg-[var(--primary)] text-white shadow-sm" : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"}`}
+            >
+              SIH 2025
+            </button>
+            <button 
+              onClick={() => setSelectedYear(2026)}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${selectedYear === 2026 ? "bg-[var(--primary)] text-white shadow-sm" : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"}`}
+            >
+              SIH 2026
+            </button>
+          </div>
           <p className="text-sm text-[var(--muted-foreground)]">
             <span className="font-semibold text-[var(--foreground)]">{filtered.length}</span> problems
           </p>
